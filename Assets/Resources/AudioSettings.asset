@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c20c0c8f0e713042abb3d8b22e8204a, type: 3}
+  m_Name: AudioSettings
+  m_EditorClassIdentifier: 
+  _menuMusic: {fileID: 8300000, guid: 5e0c4e20beabf2a4385e6c06d57ab122, type: 3}
+  _gameMusic: {fileID: 8300000, guid: bc543fcc4ff97b74f8f6e5db88a9ecf1, type: 3}
+  _moveSound: {fileID: 0}
+  _moveSoundVolume: 0.5
+  _rotateSound: {fileID: 8300000, guid: 0994c12e202f342459a4212e7287f7e8, type: 3}
+  _rotateSoundVoulme: 0.5
+  _snapSound: {fileID: 8300000, guid: cf6c0e7fbef9449c98a0cdb5ea0c4d9f, type: 3}
+  _snapSoundVoulme: 1
+  _cleanRowSound: {fileID: 8300000, guid: 7bd6b897eb5ca4b7d88a205c4a51640c, type: 3}
+  _cleanRowSoundVoulme: 1
+  _gameOverSound: {fileID: 8300000, guid: 5039414d94a6e4e70a5ab9e8833e992a, type: 3}
+  _gameOverSoundVoulme: 0.5
