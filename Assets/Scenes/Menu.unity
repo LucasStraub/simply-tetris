@@ -501,8 +501,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 412, y: 0}
-  m_SizeDelta: {x: 824, y: 0}
+  m_AnchoredPosition: {x: 860, y: 0}
+  m_SizeDelta: {x: 1720, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1001536853
 MonoBehaviour:
@@ -892,7 +892,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 0.96
-  m_Text: TETRIS
+  m_Text: SIMPLY TETRIS
 --- !u!222 &1933526984
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1073,7 +1073,7 @@ PrefabInstance:
     - target: {fileID: 1327561464680736105, guid: 572ef63b644389d4995f9e663bd0a539,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 412
+      value: 860
       objectReference: {fileID: 0}
     - target: {fileID: 1327561464680736105, guid: 572ef63b644389d4995f9e663bd0a539,
         type: 3}
@@ -1083,7 +1083,7 @@ PrefabInstance:
     - target: {fileID: 1327561464680736105, guid: 572ef63b644389d4995f9e663bd0a539,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 824
+      value: 1720
       objectReference: {fileID: 0}
     - target: {fileID: 1327561464680736105, guid: 572ef63b644389d4995f9e663bd0a539,
         type: 3}
