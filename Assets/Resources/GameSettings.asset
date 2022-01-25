@@ -20,3 +20,4 @@ MonoBehaviour:
   _softDropSpeed: 15
   _horizontalSpeed: 10
   _scorePerRow: 100
+  _scoreSpeedMod: 0.01

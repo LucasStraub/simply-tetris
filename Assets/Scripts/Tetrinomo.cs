@@ -1,112 +1,76 @@
 ﻿public struct Tetromino
 {
-    public TetrominoType Type;
-    public int[,] Matrix;
-
-    public Tetromino(TetrominoType type)
+    private static int[][,] _matrixes = new[]
     {
-        Type = type;
-        Matrix = GetMatrixByType(type).Rotate90();
-    }
-
-    public static string GeStringByType(TetrominoType type)
-    {
-        // Text is set based on font Tetris Blocks chars.
-        // The char selected is the invese (rotated 180 degress)
-        // of the char wanted, this is due to font alignment.
-        //https://www.dafont.com/pt/tetris-blocks.font
-        switch (type)
+        new int[3, 3] // L
         {
-            case TetrominoType.L:
-                return "O";
-            case TetrominoType.J:
-                return "N";
-            case TetrominoType.Z:
-                return "H";
-            case TetrominoType.S:
-                return "K";
-            case TetrominoType.T:
-                return "C";
-            case TetrominoType.I:
-                return "G";
-            case TetrominoType.O:
-                return "B";
-        }
-        return "";
-    }
-
-    public static Tetromino Random()
-    {
-        var rand = UnityEngine.Random.Range(1, 8);
-        return new Tetromino((TetrominoType)rand);
-    }
-
-    private static int[,] GetMatrixByType(TetrominoType type)
-    {
-        switch (type)
+            { 0, 0, 0 },
+            { 1, 1, 1 },
+            { 1, 0, 0 },
+        },
+        new int[3, 3] // J
         {
-            case TetrominoType.L:
-                return new int[3, 3]
-                {
-                    { 0, 0, 0 },
-                    { 1, 1, 1 },
-                    { 1, 0, 0 },
-                };
-            case TetrominoType.J:
-                return new int[3, 3]
-                {
-                    { 0, 0, 0 },
-                    { 1, 1, 1 },
-                    { 0, 0, 1 },
-                };
-            case TetrominoType.Z:
-                return new int[3, 3]
-                {
-                    { 0, 0, 0 },
-                    { 1, 1, 0 },
-                    { 0, 1, 1 },
-                };
-            case TetrominoType.S:
-                return new int[3, 3]
-                {
-                    { 0, 0, 0 },
-                    { 0, 1, 1 },
-                    { 1, 1, 0 },
-                };
-            case TetrominoType.T:
-                return new int[3, 3]
-                {
-                    { 0, 0, 0 },
-                    { 1, 1, 1 },
-                    { 0, 1, 0 },
-                };
-            case TetrominoType.I:
-                return new int[4, 4]
-                {
-                    { 0, 0, 0, 0 },
-                    { 1, 1, 1, 1 },
-                    { 0, 0, 0, 0 },
-                    { 0, 0, 0, 0 },
-                };
-            case TetrominoType.O:
-            default:
-                return new int[2, 2]
-                {
-                    { 1, 1 },
-                    { 1, 1 },
-                };
-        }
-    }
-}
+            { 0, 0, 0 },
+            { 1, 1, 1 },
+            { 0, 0, 1 },
+        },
+        new int[3, 3] // Z
+        {
+            { 0, 0, 0 },
+            { 1, 1, 0 },
+            { 0, 1, 1 },
+        },
+        new int[3, 3] // S
+        {
+            { 0, 0, 0 },
+            { 0, 1, 1 },
+            { 1, 1, 0 },
+        },
+        new int[3, 3] // T
+        {
+            { 0, 0, 0 },
+            { 1, 1, 1 },
+            { 0, 1, 0 },
+        },
+        new int[4, 4] // I
+        {
+            { 0, 0, 0, 0 },
+            { 1, 1, 1, 1 },
+            { 0, 0, 0, 0 },
+            { 0, 0, 0, 0 },
+        },
+        new int[2, 2] // O
+        {
+            { 1, 1 },
+            { 1, 1 },
+        },
+    };
 
-public enum TetrominoType
-{
-    None = 0,
-    L = 1,
-    J = 2,
-    Z = 3,
-    S = 4,
-    T = 5,
-    I = 6,
-    O = 7,
+    public static int[,] GetMatrixByType(int type)
+    {
+        return type - 1 < _matrixes.Length ? _matrixes[type - 1] : null;
+    }
+
+    public static string GetStringByType(int type)
+    {
+        var matrix = GetMatrixByType(type);
+        var result = "";
+        for (int i = 0; i < matrix.GetLength(0); i++)
+        {
+            for (int j = 0; j < matrix.GetLength(1); j++)
+            {
+                if (matrix[i,j] > 0)
+                    result += ((char)0x25A0).ToString();
+                else
+                    result += ((char)0x25A1).ToString();
+            }
+            result += "\n";
+        }
+        return result;
+    }
+
+    public static int GetRandomType()
+    {
+        return UnityEngine.Random.Range(0, _matrixes.Length) + 1;
+    }
 }
