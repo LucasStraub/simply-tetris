@@ -5,12 +5,10 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-#pragma warning disable 0649
     [Header("Controllers")]
     [SerializeField] private CanvasController _canvasController;
     [SerializeField] private FogController _fogController;
     [SerializeField] private AudioController _audioController;
-#pragma warning restore 0649
 
     // Settings
     private GameSettings _gameSettings;
@@ -21,8 +19,9 @@ public class GameManager : MonoBehaviour
     private TileController[,] _tilesMatrix;
 
     // Tetromino Values
-    private Tetromino _nextTetromino;
-    private Tetromino _curTetromino;
+    private int _nextType;
+    private int _curType;
+    private int[,] _curMatrix;
     private Vector2Int _curOffset;
 
     // Score
@@ -76,6 +75,7 @@ public class GameManager : MonoBehaviour
         {
             var w = _gameSettings.Width;
             var h = _gameSettings.Height;
+            Gizmos.color = Color.red;
             Gizmos.DrawWireCube(new Vector2(w / 2 - 0.5f, h / 2 - 0.5f), new Vector3(w, h, 1));
         }
     }
@@ -134,11 +134,11 @@ public class GameManager : MonoBehaviour
     /// </summary>
     /// <param name="positions"></param>
     /// <param name="type"></param>
-    private void SetTiles(List<Vector2Int> positions, TetrominoType type)
+    private void SetTiles(List<Vector2Int> positions, int type)
     {
         positions.ForEach(o => 
         {
-            _matrix[o.x, o.y] = (int)type;
+            _matrix[o.x, o.y] = type;
             _tilesMatrix[o.x, o.y].SetTile(type);
         });
     }
@@ -150,8 +150,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void RandomizeNextTetromino()
     {
-        _nextTetromino = Tetromino.Random();
-        _canvasController.SetNext(_nextTetromino.Type);
+        _nextType = Tetromino.GetRandomType();
+        _canvasController.SetNext(Tetromino.GetStringByType(_nextType));
     }
 
     /// <summary>
@@ -159,10 +159,12 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void SpawnNextTetromino()
     {
-        _curTetromino = _nextTetromino;
+        _curType = _nextType;
+        _curMatrix = Tetromino.GetMatrixByType(_nextType);
+
         RandomizeNextTetromino();
 
-        var matrix = _curTetromino.Matrix;
+        var matrix = _curMatrix;
         var tOffset = new Vector2Int(matrix.GetLength(0) / 2, 0);
 
         matrix.Foreach((o, x, y) => 
@@ -177,7 +179,7 @@ public class GameManager : MonoBehaviour
         var positions = GetFilledPositions(matrix, _curOffset);
 
         if (AreValidPositions(positions))
-            SetTiles(positions, _curTetromino.Type);
+            SetTiles(positions, _curType);
         else
             EndGame();
     }
@@ -189,7 +191,7 @@ public class GameManager : MonoBehaviour
     private void Rotate(bool clockwise)
     {
         PlaySound(_audioSettings.RotateSound, _audioSettings.RotateSoundVolume);
-        MoveAndRotate(_curOffset, _curTetromino.Matrix.Rotate90(clockwise));
+        MoveAndRotate(_curOffset, _curMatrix.Rotate90(clockwise));
     }
 
     /// <summary>
@@ -200,7 +202,7 @@ public class GameManager : MonoBehaviour
     private void Move(Vector2Int dir, bool snap = false)
     {
         PlaySound(_audioSettings.MoveSound, _audioSettings.MoveSoundVolume);
-        MoveAndRotate(_curOffset + dir, _curTetromino.Matrix, snap);
+        MoveAndRotate(_curOffset + dir, _curMatrix, snap);
     }
 
     /// <summary>
@@ -212,10 +214,10 @@ public class GameManager : MonoBehaviour
     private void MoveAndRotate(Vector2Int newOffset, int[,] newMatrix, bool snap = false)
     {
         // Get current piece position
-        var curPositions = GetFilledPositions(_curTetromino.Matrix, _curOffset);
+        var curPositions = GetFilledPositions(_curMatrix, _curOffset);
 
         // Clear current piece position
-        SetTiles(curPositions, TetrominoType.None);
+        SetTiles(curPositions, 0);
 
         // Get new positions
         var nextPositions = GetFilledPositions(newMatrix, newOffset);
@@ -223,15 +225,15 @@ public class GameManager : MonoBehaviour
         if (AreValidPositions(nextPositions))
         {
             // Sets new positions with correct index
-            SetTiles(nextPositions, _curTetromino.Type);
+            SetTiles(nextPositions, _curType);
 
             _curOffset = newOffset;
-            _curTetromino.Matrix = newMatrix;            
+            _curMatrix = newMatrix;            
         }
         else
         {
             // Sets original positions with original index
-            SetTiles(curPositions, _curTetromino.Type);
+            SetTiles(curPositions, _curType);
 
             if (snap)
             {
@@ -277,7 +279,7 @@ public class GameManager : MonoBehaviour
             for (var j = startIndex; j < _gameSettings.Height - 1; j++)
             {
                 _matrix[i, j] = _matrix[i, j + 1];
-                _tilesMatrix[i, j].SetTile((TetrominoType)_matrix[i, j + 1]);
+                _tilesMatrix[i, j].SetTile(_matrix[i, j + 1]);
             }
             _matrix[i, _gameSettings.Height - 1] = 0;
             _tilesMatrix[i, _gameSettings.Height - 1].SetTile(0);

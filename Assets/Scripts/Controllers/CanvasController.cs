@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class CanvasController : MonoBehaviour
 {
-#pragma warning disable 0649
     [Header("Gameplay")]
     [SerializeField] private Canvas _gameplayCanvas;
     [SerializeField] private Text _score;
@@ -19,7 +18,6 @@ public class CanvasController : MonoBehaviour
     [SerializeField] private Text _overScore;
     [SerializeField] private Button _menuButton;
     [SerializeField] private Animator _gameOverFadeAnimator;
-#pragma warning restore 0649
 
     private Action _onMenuClicked;
 
@@ -33,9 +31,9 @@ public class CanvasController : MonoBehaviour
         _score.text = score.ToString();
     }
 
-    public void SetNext(TetrominoType tetrominoType)
+    public void SetNext(string value)
     {
-        _next.text = Tetromino.GeStringByType(tetrominoType);
+        _next.text = value;
     }
 
     public void SetGameplayCanvasActive(bool value)
@@ -59,7 +57,7 @@ public class CanvasController : MonoBehaviour
 
         _onMenuClicked?.Invoke();
 
-        IEnumerator Co()
+        static IEnumerator Co()
         {
             yield return new WaitForSeconds(1);
             SceneManager.OpenMenuScene();

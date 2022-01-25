@@ -3,31 +3,29 @@ using UnityEngine;
 
 public class TileController : MonoBehaviour
 {
-#pragma warning disable 0649
     [SerializeField] private MeshRenderer _meshRenderer;
     [SerializeField] private Animator _animator;
 
     [SerializeField] private ColorScheme[] _colorSchemes;
-#pragma warning restore 0649
 
-    public void SetTile(TetrominoType value)
+    public void SetTile(int value)
     {
         SetActive(value);
         SetColor(value);
     }
 
-    public void SetActive(TetrominoType value)
+    public void SetActive(int value)
     {
-        _animator.SetBool("Open", value != TetrominoType.None);
+        _animator.SetBool("Open", value != 0);
     }
 
-    public void SetColor(TetrominoType value)
+    public void SetColor(int value)
     {
-        var main = _colorSchemes[(int)value].Main;
-        var dark = _colorSchemes[(int)value].Dark;
-        var bright = _colorSchemes[(int)value].Bright;
+        var main = _colorSchemes[value].Main;
+        var dark = _colorSchemes[value].Dark;
+        var bright = _colorSchemes[value].Bright;
 
-        var delay = value == TetrominoType.None ? 1 : 0;
+        var delay = value == 0 ? 1 : 0;
         IEnumerator Co()
         {
             yield return new WaitForSeconds(delay);
